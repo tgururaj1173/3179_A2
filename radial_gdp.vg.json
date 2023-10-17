@@ -1,0 +1,50 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "GDP per capita for each continent in 2021",
+  "width": 360,
+  "height": 350,
+  "data": {
+    "values": [
+      {"data": 2059.338, "continent": "Africa"},
+      {"data": 8329.406, "continent": "Asia and Pacific"},
+      {"data": 32228.364, "continent": "Europe"},
+      {"data": 53105.969, "continent": "North America"},
+      {"data": 7654.63, "continent": "South America"}
+    ]
+  },
+  "layer": [
+    {
+      "mark": {"type": "arc", "innerRadius": 20, "stroke": "#fff"}
+    }
+  ],
+  "encoding": {
+    "theta": {"field": "data", "type": "quantitative", "stack": true},
+    "radius": {"field": "data", "scale": {"type": "sqrt", "zero": true, "rangeMin": 20}},
+    "color": {
+      "field": "continent", 
+      "type": "nominal", 
+      "legend": "continent",
+      "scale": {
+        "domain": [
+        "Africa",
+        "Asia and Pacific",
+        "Europe",
+        "North America",
+        "South America"
+        ],
+        "range": [
+        "#e41a1c",
+        "#984ea3",
+        "#ff7f00",
+        "#a6cee3",
+        "#377eb8",
+        "#a65628"
+        ]
+      }
+  },
+    "tooltip": [
+      {"field": "continent", "type": "nominal", "title": "Continent"},
+      {"field": "data", "type": "quantitative", "title": "GDP per Capita"}
+    ]
+  }
+}

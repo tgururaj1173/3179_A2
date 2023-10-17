@@ -1,0 +1,83 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "params": [
+      {
+        "name": "continentFilter",
+        "value": "World",
+        "bind": {
+          "input": "select",
+          "options": ["World", "Africa", "Asia", "Europe", "North America", "Oceania", "South America"],
+          "name": "Continent "
+        }
+      }
+    ],
+    "layer":[
+    {
+    "width": 330,
+    "height": 200,
+    "title": "Development vs Happiness 2021",
+    "data": {
+      "url": "https://raw.githubusercontent.com/tgururaj1173/Assignment2/main/data/HDI_HPI_data.csv"
+    },
+    "transform": [
+      {
+        "filter": "continentFilter === 'World' || datum.Continent === continentFilter",
+        "calculate": "year(datum.Year)",
+        "as": "Year"
+      }
+    ],
+    "mark": "circle",
+    "encoding": {
+      "x": {
+        "field": "HDI",
+        "type": "quantitative",
+        "title": "Human Development Index (HDI)"
+      },
+      "y": {
+        "field": "HPI",
+        "type": "quantitative",
+        "title": "Happy Planet Index (HPI)"
+      },
+      "color": {
+        "field": "Continent",
+        "type": "nominal",
+        "scale": {
+        "domain": [
+        "North America",
+        "South America",
+        "Europe",
+        "Africa",
+        "Asia",
+        "Oceania"
+        ],
+        "range": [
+        "#e41a1c",
+        "#984ea3",
+        "#ff7f00",
+        "#a6cee3",
+        "#377eb8",
+        "#a65628"
+        ]
+        }
+        },
+        "opacity": {
+        "value": 0.6
+        },
+      "tooltip": [
+        {"field": "Country", "type": "nominal", "title": "Country"},
+        {"field": "Continent", "type": "nominal", "title": "Continent"},
+        {"field": "GDP_per_capita", "type": "quantitative", "title": "GDP per Capita"},
+        {"field": "HDI", "type": "quantitative", "title": "Human Development Index (HDI)"},
+        {"field": "HPI", "type": "quantitative", "title": "Happy Planet Index (HPI)"}
+      ],
+      "size": {
+        "field": "GDP_per_capita",
+        "type": "quantitative"
+      }
+    }
+    }
+        
+    ]
+    
+  }
+  

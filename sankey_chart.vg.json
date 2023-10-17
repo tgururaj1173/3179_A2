@@ -1,0 +1,112 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 500,
+  "height": 250,
+  "title": "Definition of Development",
+  "autosize": "none",
+  "data": [
+    {
+      "name": "nodes",
+      "values": [
+        {"id": "Development", "x": -50, "y": 100, "label": "Development"},
+        {"id": "Education", "x": 275, "y": 90, "label": "Education"},
+        {"id": "Health", "x": 175, "y": 175, "label": "Health"},
+        {"id": "Economy", "x": 275, "y": 135, "label": "Economy"},
+        {"id": "Happiness", "x": 175, "y": 40, "label": "Happiness"}
+      ],
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "atan2(datum.y, datum.x)",
+          "as": "angle"
+        },
+        {
+          "type": "formula",
+          "expr": "sqrt(datum.y * datum.y + datum.x * datum.x)",
+          "as": "radius"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.angle",
+          "as": "v0"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.radius",
+          "as": "v1"
+        }
+      ]
+    },
+    {
+      "name": "edges",
+      "values": [
+        {"source": "Development", "target": "Education"},
+        {"source": "Development", "target": "Health"},
+        {"source": "Development", "target": "Economy"},
+        {"source": "Development", "target": "Happiness"}
+      ],
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "nodes",
+          "key": "id",
+          "fields": ["source", "target"],
+          "as": ["sourceNode", "targetNode"]
+        },
+        {
+          "type": "linkpath",
+          "sourceX": "sourceNode.x",
+          "sourceY": "sourceNode.y",
+          "targetX": "targetNode.x",
+          "targetY": "targetNode.y"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "type": "path",
+      "from": {"data": "edges"},
+      "encode": {
+        "enter": {
+          "stroke": {"value": "#ccc"},
+          "strokeWidth": {"value": 7},
+          "x": {"value": 100},
+          "y": {"value": 0}
+        },
+        "update": {
+          "path": {"field": "path"} 
+        }
+      }
+    },
+    {
+      "type": "symbol",
+      "from": {"data": "nodes"},
+      "encode": {
+        "enter": {
+          "size": {"value": 200},
+          "fill": {"value": "steelblue"},
+          "x": {"field": "x", "offset": 100},
+          "y": {"field": "y", "offset": 0}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "nodes"},
+      "encode": {
+        "enter": {
+          "text": {"field": "label"},
+          "fill": {"value": "black"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "fontSize": {"value": 12}
+        },
+        "update": {
+          "x": {"field": "x", "offset": 100},
+          "y": {"field": "y", "offset": 20}
+        }
+      }
+    }
+  ]
+}
